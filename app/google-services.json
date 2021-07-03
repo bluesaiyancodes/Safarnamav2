@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "401505159902",
+    "project_id": "safarnama-281505",
+    "storage_bucket": "safarnama-281505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401505159902:android:d51b99fa35c8ffa8f6d04f",
+        "android_client_info": {
+          "package_name": "com.strongties.app.safarnama"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401505159902-0imeq8taa5df2iqje249kgcns4re2v64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strongties.app.safarnama",
+            "certificate_hash": "c5b21d4b4ee05594ffab059fc3708111fbe2c51d"
+          }
+        },
+        {
+          "client_id": "401505159902-ruluo1leg2s8bfr4b67a6640lfusv4i9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC65NbzfT6y_pCaSYjhA_X8nm_3Vh2W8mk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401505159902-ruluo1leg2s8bfr4b67a6640lfusv4i9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

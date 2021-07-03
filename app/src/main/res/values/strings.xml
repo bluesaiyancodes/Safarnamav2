@@ -1,3 +1,105 @@
 <resources>
     <string name="app_name">Safarnama</string>
+
+    <string name="search_place">Search Place</string>
+
+    <string name="menu_1">Wander</string>
+    <string name="menu_2">Nearby</string>
+    <string name="menu_3">Buddies</string>
+    <string name="menu_4">Explore</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="view_lists">View Wishlist</string>
+    <string name="mode_dark">Dark mode</string>
+    <string name="walkthrough">Walkthrough</string>
+    <string name="review">Review</string>
+    <string name="logout">Log Out</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="developer_options">Developer Options</string>
+    <string name="location">Location</string>
+
+
+    <!-- Java Class strings-->
+    <string name="error_fetching">Error Fetching data</string>
+    <string name="timeout">Time Out</string>
+
+    <!-- Firestore Data-->
+    <string name="collection_users">Users</string>
+    <string name="collection_user_locations">User Locations</string>
+    <string name="collection_relations">User Relations</string>
+    <string name="collection_friendlist">Friend list</string>
+    <string name="collection_requestlist">Request list</string>
+    <string name="collection_requestedlist">Requested list</string>
+    <string name="collection_landmarks">Landmarks</string>
+    <string name="collection_feed">Feed</string>
+    <string name="collection_posts">posts</string>
+    <string name="document_global">global</string>
+    <string name="collection_stats">Stats</string>
+    <string name="collection_lists">Lists</string>
+    <string name="document_accomplished">Accomplished</string>
+    <string name="document_bucketlist">Bucket List</string>
+    <string name="collection_fcm_tokens">Firebase Tokens</string>
+    <string name="collection_maintainance">Maintenance</string>
+    <string name="document_version">Version</string>
+
+
+    <!-- Text Modifiers -->
+    <string name="i_circle">\u24D8</string>
+    <string name="i_star1">\u2605</string>
+    <string name="i_star2">\u2730</string>
+
+    <!-- Landmark categories-->
+    <string name="category1">Dams &amp; Water Reservoirs</string>
+    <string name="category2">Education &amp; History</string>
+    <string name="category3">Garden &amp; Parks</string>
+    <string name="category4">Hills &amp; Caves</string>
+    <string name="category5">Iconic Places</string>
+    <string name="category6">Nature &amp; Wildlife</string>
+    <string name="category7">Port &amp; Sea Beach</string>
+    <string name="category8">Religious Sites</string>
+    <string name="category9">Waterbodies</string>
+    <string name="category10">Zoos &amp; Reserves</string>
+
+
+    <!-- Avatar Level -->
+    <string name="avatar_0">0 Star</string>
+    <string name="avatar_0_lvl">Path Finder \u2606</string>
+    <string name="avatar_0_text">Path Finder</string>
+    <string name="avatar_1">1 Star</string>
+    <string name="avatar_1_lvl">Occasional \u2B50</string>
+    <string name="avatar_1_text">Occasional</string>
+    <string name="avatar_2">2 Star</string>
+    <string name="avatar_2_lvl">Curious \u2605 \u2605</string>
+    <string name="avatar_2_text">Curious</string>
+    <string name="avatar_3">3 Star</string>
+    <string name="avatar_3_lvl">Thrill Seeker \u2B50 \u2B50 \u2B50</string>
+    <string name="avatar_3_text">Thrill Seeker</string>
+    <string name="avatar_4">4 Star</string>
+    <string name="avatar_4_lvl">Adventurer \u2B50 \u2B50 \u2B50 \u2B50</string>
+    <string name="avatar_4_text">Adventurer</string>
+    <string name="avatar_5">5 Star</string>
+    <string name="avatar_5_lvl">Wanderer \u2B50 \u2B50 \u2B50 \u2B50 \u2B50</string>
+    <string name="avatar_5_text">Wanderer</string>
+    <string name="avatar_dev">Developer</string>
+    <string name="avatar_dev_lvl">\u272d Developer \u272d</string>
+    <string name="avatar_dev_text">Developer</string>
+
+    <string name="badge_progress_singular"> place more to get to the next badge</string>
+    <string name="badge_progress_plural"> places more to get to the next badge</string>
+    <string name="avatar_5_congratulations">Congratulations on being a Wanderer</string>
+
+    <!-- Signin texts -->
+    <string name="outdated_version">Outdated Version</string>
+    <string name="outdated_version_message">Download the latest version from Playstore or Request the Developers for updated version.</string>
+    <string name="playstore">PlayStore</string>
+    <string name="dev_support">Dev Support</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="contact_title">Contact Us - Submit through Email</string>
+    <string name="contact_msg">Type Suggestions, Feedbacks or Errors</string>
+    <string name="contact_submit">Submit</string>
+    <string name="support_email">strongtieschannel@gmail.com</string>
+    <string name="support_sub">Support Email from Safarnama - </string>
+    <string name="support_title">Contacting Support</string>
+
 </resources>

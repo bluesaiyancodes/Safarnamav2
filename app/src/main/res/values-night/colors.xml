@@ -17,7 +17,7 @@
 
 
     <color name="primeColor">@color/color1</color>
-    <color name="coloronPrimary">@color/color2</color>
-    <color name="coloronSeconary">@color/color6</color>
-    <color name="cardbackground">@color/white</color>
+    <color name="coloronPrimary">@color/color6</color>
+    <color name="coloronSeconary">@color/color2</color>
+    <color name="cardbackground">@color/color3</color>
 </resources>

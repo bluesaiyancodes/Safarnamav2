@@ -18,7 +18,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.button.MaterialButton;
-import com.strongties.app.safarnama.services.LocationService;
 
 import java.util.List;
 
@@ -37,6 +36,9 @@ public class PermissionsActivity extends AppCompatActivity implements EasyPermis
     private FusedLocationProviderClient mFusedLocationClient;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class PermissionsActivity extends AppCompatActivity implements EasyPermis
         // Set Proceed Button
         MaterialButton proceed_btn = findViewById(R.id.permissions_proceed);
         proceed_btn.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
 
@@ -97,7 +99,7 @@ public class PermissionsActivity extends AppCompatActivity implements EasyPermis
 
 
                             // Got Location, now call MainActivity
-                            Intent intent = new Intent(PermissionsActivity.this, MainActivity.class);
+                            Intent intent = new Intent(PermissionsActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }

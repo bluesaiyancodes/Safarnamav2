@@ -1,23 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
+    <!--  Map View Fragment -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        tools:context=".MainActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        android:layout_height="match_parent" />
 
-    <fragment android:id="@+id/autocomplete_fragment"
+    <!--  AutoComplete Text View -->
+    <RelativeLayout
+        android:id="@+id/main_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
+        android:layout_marginTop="10dp"
+        android:paddingTop="5dp">
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="500dp"
+            app:cardElevation="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Search Icon -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/main_menu_title_icon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_search"
+                    android:visibility="visible" />
+
+                <!-- Back Icon: Visible after ACTV is clicked -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/main_menu_title_back"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_back"
+                    android:visibility="gone" />
+
+                <!-- App Name Icon: Only shows for a few secs -->
+                <ImageView
+                    android:id="@+id/main_menu_title_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_app_name"
+                    android:visibility="invisible" />
+
+                <!-- ACTV: Auto Complete Text View -->
+                <AutoCompleteTextView
+                    android:id="@+id/main_menu_actv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toEndOf="@id/main_menu_title_icon"
+                    android:backgroundTint="@android:color/transparent"
+                    android:dropDownHorizontalOffset="-20dp"
+                    android:dropDownVerticalOffset="10dp"
+                    android:hint="@string/search_place"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:paddingEnd="60dp"
+                    android:visibility="visible" />
+
+                <!-- User Image -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/main_menu_title_profile"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_profile"
+                    android:visibility="visible" />
+
+                <!-- Reset Icon: Visible after ACTV is clicked -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/main_menu_title_reset"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_cross"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/main_menu_fill_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+    <!-- Menu Items -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_1"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/menu_item_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/primeColor"
+                android:elevation="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/menu_1"
+                android:textColor="@color/coloronPrimary"
+                android:textSize="12sp"
+                app:cornerRadius="40dp"
+                app:elevation="10dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/menu_item_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/coloronPrimary"
+                android:elevation="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/menu_2"
+                android:textColor="@color/coloronSeconary"
+                android:textSize="12sp"
+                app:cornerRadius="40dp"
+                app:elevation="10dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/menu_item_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/coloronPrimary"
+                android:elevation="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/menu_3"
+                android:textColor="@color/coloronSeconary"
+                android:textSize="12sp"
+                app:cornerRadius="40dp"
+                app:elevation="10dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/menu_item_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/coloronPrimary"
+                android:elevation="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/menu_4"
+                android:textColor="@color/coloronSeconary"
+                android:textSize="12sp"
+                app:cornerRadius="40dp"
+                app:elevation="10dp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

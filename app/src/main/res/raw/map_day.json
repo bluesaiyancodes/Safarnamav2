@@ -1,13 +1,5 @@
 [
   {
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
     "featureType": "administrative",
     "elementType": "geometry",
     "stylers": [
@@ -17,7 +9,7 @@
     ]
   },
   {
-    "featureType": "administrative.land_parcel",
+    "featureType": "administrative.locality",
     "stylers": [
       {
         "visibility": "off"
@@ -26,6 +18,7 @@
   },
   {
     "featureType": "administrative.neighborhood",
+    "elementType": "labels",
     "stylers": [
       {
         "visibility": "off"
@@ -44,13 +37,46 @@
     "featureType": "poi.attraction",
     "stylers": [
       {
-        "visibility": "on"
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.medical",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.place_of_worship",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },
   {
     "featureType": "road",
     "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.text",
     "stylers": [
       {
         "visibility": "off"
