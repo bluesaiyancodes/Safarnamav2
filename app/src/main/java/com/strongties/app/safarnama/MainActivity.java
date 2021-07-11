@@ -2,7 +2,6 @@ package com.strongties.app.safarnama;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -10,8 +9,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -19,7 +16,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.Log;
@@ -51,9 +49,12 @@ public class MainActivity extends AppCompatActivity{
 
     private ArrayList<String> places_list;
     private ArrayList<String> places_id_list;
+    private ArrayList<String> places_type;
 
     AutoCompleteTextView actv_search;
     ArrayAdapter<String> adapter;
+
+    Fragment currentFragment;
 
 
     private LocationService mService;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity{
         // Initialize ArrayLists
         places_list = new ArrayList<>();
         places_id_list = new ArrayList<>();
+        places_type = new ArrayList<>();
 
         //Initialize Auto-Complete Text View
         actv_search = findViewById(R.id.main_menu_actv);
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity{
 
         // Set the Arraylists
         fetchlandmarkdetails();
+        fetchdistrictdetails();
 
         //Flag for Keyboard On Check
         AtomicReference<Boolean> keyboardOn = new AtomicReference<>();
@@ -102,31 +105,6 @@ public class MainActivity extends AppCompatActivity{
 
         });
 
-        // Set Auto-Complete Text View
-        actv_search.setOnItemClickListener((adapterView, view, i, l) -> {
-            reset.setVisibility(View.GONE);
-            iv_profile.setVisibility(View.VISIBLE);
-            back_btn.setVisibility(View.GONE);
-            search_icon.setVisibility(View.VISIBLE);
-
-
-            view.startAnimation(new AlphaAnimation(1F, 0.7F));
-            //Set Progressbar
-            ProgressDialog mProgressDialog = ProgressDialog.show(MainActivity.this, "Searching", "Fetching Information from Server");
-            mProgressDialog.setCanceledOnTouchOutside(false); // main method that force user cannot click outside
-            Runnable progressRunnable = () -> {
-                mProgressDialog.cancel();       //Cancel Progress Dialog
-                actv_search.setText("");
-                Toast.makeText(this, getString(R.string.timeout), Toast.LENGTH_SHORT).show();
-            };
-            Handler pdCanceller = new Handler();
-            pdCanceller.postDelayed(progressRunnable, 5000);    //Run after 5 secs
-
-
-            String inputPlaceID = places_id_list.get(places_list.indexOf(adapterView.getAdapter().getItem(i).toString()));
-            Log.d(TAG, "PlaceID -> " + inputPlaceID);
-        });
-
         back_btn.setOnClickListener(view -> {
             reset.setVisibility(View.GONE);
             iv_profile.setVisibility(View.VISIBLE);
@@ -143,6 +121,49 @@ public class MainActivity extends AppCompatActivity{
             actv_search.setText("");
         });
 
+        // Auto-Complete Item Click Listener
+        actv_search.setOnItemClickListener((parent, view, position, id) -> {
+            reset.setVisibility(View.GONE);
+            iv_profile.setVisibility(View.VISIBLE);
+            back_btn.setVisibility(View.GONE);
+            search_icon.setVisibility(View.VISIBLE);
+            actv_search.setText("");
+
+            dismissKeyboard(this);
+            keyboardOn.set(Boolean.FALSE);
+
+
+            //Set Progressbar
+            ProgressDialog mProgressDialog = ProgressDialog.show(MainActivity.this, "Searching", "Fetching Information from Server");
+            mProgressDialog.setIndeterminateDrawable(getDrawable(R.drawable.progress_circle));
+            mProgressDialog.setCanceledOnTouchOutside(false); // user cannot click outside
+
+            // get selected place id
+            String inputPlaceID = places_id_list.get(places_list.indexOf(parent.getAdapter().getItem(position).toString()));
+            Log.d(TAG, "PlaceID -> " + inputPlaceID);
+
+            //check if the current fragment is Wonder fragment
+            assert currentFragment.getTag() != null;
+            if(currentFragment.getTag().equals("Wonder Fragment")) {
+
+                Location location = null;
+                int zoom = 0;
+
+                //get location of district type places
+                if(places_type.get(places_id_list.indexOf(inputPlaceID)).equals("district")){
+                    location = getDistrictLocation(inputPlaceID);
+                    zoom = 10;
+                }
+
+                assert location != null;
+
+                //update Map of Wander fragment
+                ((Fragment_Wander) currentFragment).updateMap(location, zoom);
+            }
+
+            mProgressDialog.dismiss();
+
+        });
 
 
 
@@ -155,10 +176,6 @@ public class MainActivity extends AppCompatActivity{
         if (!isLocServiceRunning(mService.getClass())) {
             startService(mServiceIntent);
         }
-
-        //Start Initial Fragment
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new Fragment_Wander(), "Wonder Fragment").commit();
 
 
 
@@ -181,6 +198,7 @@ public class MainActivity extends AppCompatActivity{
         MaterialButton mm_btn3 = findViewById(R.id.menu_item_3);
         MaterialButton mm_btn4 = findViewById(R.id.menu_item_4);
 
+
         {
 
             mm_btn1.setOnClickListener(view -> {
@@ -197,6 +215,15 @@ public class MainActivity extends AppCompatActivity{
 
                 mm_btn4.setBackgroundColor(getColor(R.color.coloronPrimary));
                 mm_btn4.setTextColor(getColor(R.color.coloronSeconary));
+
+                // Menu Click Actions
+                Fragment fragmentWonder = new Fragment_Wander();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragmentWonder, "Wonder Fragment");
+                fragmentTransaction.commit();
+                currentFragment = fragmentWonder;
+
+
             });
 
             mm_btn2.setOnClickListener(view -> {
@@ -213,6 +240,14 @@ public class MainActivity extends AppCompatActivity{
 
                 mm_btn4.setBackgroundColor(getColor(R.color.coloronPrimary));
                 mm_btn4.setTextColor(getColor(R.color.coloronSeconary));
+
+
+                // Menu Click Actions
+                Fragment fragmentNearby = new Fragment_Nearby();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragmentNearby, "Nearby Fragment");
+                fragmentTransaction.commit();
+                currentFragment = fragmentNearby;
             });
 
             mm_btn3.setOnClickListener(view -> {
@@ -251,6 +286,13 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+        //Start Initial Fragment
+        mm_btn1.performClick();
+
+
+
+
+
     }
 
     private boolean isLocServiceRunning(Class<?> serviceClass) {
@@ -282,6 +324,7 @@ public class MainActivity extends AppCompatActivity{
             assert cursor != null;
             places_list.add(cursor.getString(0));
             places_id_list.add(cursor.getString(1));
+            places_type.add("landmark");
         } while (cursor.moveToNext());
 
         cursor.close();
@@ -289,6 +332,61 @@ public class MainActivity extends AppCompatActivity{
         // Set actv adapter
         adapter = new ArrayAdapter<>(this, R.layout.custom_layout_actv_main_menu, R.id.custom_actv_text, places_list);
         actv_search.setAdapter(adapter);
+    }
+
+    private void fetchdistrictdetails(){
+        DatabaseHelper dbhelper = new DatabaseHelper(this);
+        SQLiteDatabase database = dbhelper.getReadableDatabase();
+
+        Cursor cursor;
+
+        cursor = database.rawQuery("SELECT district, id FROM INDIAINFO", new String[]{});
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        } else {
+            Toast.makeText(this, getString(R.string.error_fetching), Toast.LENGTH_SHORT).show();
+        }
+        do {
+            assert cursor != null;
+            places_list.add(cursor.getString(0));
+            places_id_list.add(cursor.getString(1));
+            places_type.add("district");
+        } while (cursor.moveToNext());
+
+        cursor.close();
+
+        // Set actv adapter
+        adapter = new ArrayAdapter<>(this, R.layout.custom_layout_actv_main_menu, R.id.custom_actv_text, places_list);
+        actv_search.setAdapter(adapter);
+    }
+
+    private Location getDistrictLocation(String districtid){
+        DatabaseHelper dbhelper = new DatabaseHelper(this);
+        SQLiteDatabase database = dbhelper.getReadableDatabase();
+        Location location = null;
+
+        Cursor cursor;
+
+        cursor = database.rawQuery("SELECT lat, lon FROM INDIAINFO where id = ?", new String[]{districtid});
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        } else {
+            Toast.makeText(this, getString(R.string.error_fetching), Toast.LENGTH_SHORT).show();
+        }
+        do {
+            assert cursor != null;
+            Log.d(TAG, "Lat-> " + cursor.getString(0));
+            location = new Location("Database");
+            location.setLatitude(Double.parseDouble(cursor.getString(0)));
+            location.setLongitude(Double.parseDouble(cursor.getString(1)));
+
+        } while (cursor.moveToNext());
+
+        cursor.close();
+        return  location;
+
     }
 
     public void dismissKeyboard(Activity activity) {

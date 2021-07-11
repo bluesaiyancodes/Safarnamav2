@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Display;
+import android.view.View;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -34,40 +38,48 @@ public class PermissionsActivity extends AppCompatActivity implements EasyPermis
     private final static long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private FusedLocationProviderClient mFusedLocationClient;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+    boolean isMockLocation;
 
 
-
-
-
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permissions);
 
-        //Initialize Fusedlocationclient
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        // Checking if mock location is enabled
+        prefs = getSharedPreferences("safarnamaPreferences", MODE_PRIVATE);
+        editor = prefs.edit();
+        isMockLocation = prefs.getBoolean("isMockLocation", false);
 
-        // Set Proceed Button
-        MaterialButton proceed_btn = findViewById(R.id.permissions_proceed);
-        proceed_btn.setOnClickListener(view -> {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        });
+        // If mock location is not enabled get true location
+        if(!isMockLocation){
 
-        //Check Location Permission
-        String permission = ACCESS_FINE_LOCATION;
-        if (EasyPermissions.hasPermissions(this, permission)) {
+            //Initialize Fusedlocationclient
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-            // get Location and start MainActivity
-            getLocation();
+            // Set Proceed Button
+            MaterialButton proceed_btn = findViewById(R.id.permissions_proceed);
+            proceed_btn.setOnClickListener(view -> {
+                view.setVisibility(View.INVISIBLE);
+                getLocation();
+            });
 
-        } else {
-            // Request Permission
-            EasyPermissions.requestPermissions(this, "Safarnama needs to access your current location.", REQUEST_CHECK_SETTINGS, permission);
+            //Check Location Permission
+            String permission = ACCESS_FINE_LOCATION;
+            if (EasyPermissions.hasPermissions(this, permission)) {
+
+                // get Location and start MainActivity
+                getLocation();
+
+            } else {
+                // Request Permission
+                EasyPermissions.requestPermissions(this, "Safarnama needs to access your current location.", REQUEST_CHECK_SETTINGS, permission);
+            }
+
         }
-
-
-
 
 
 
@@ -97,6 +109,10 @@ public class PermissionsActivity extends AppCompatActivity implements EasyPermis
                         if (location != null) {
                             // Log.d(TAG, location.toString());
 
+                            // Save the location details to cache
+                            editor.putString("cachedLat", Double.toString(location.getLatitude()));
+                            editor.putString("cachedLon", Double.toString(location.getLongitude()));
+                            editor.apply();
 
                             // Got Location, now call MainActivity
                             Intent intent = new Intent(PermissionsActivity.this, LoginActivity.class);

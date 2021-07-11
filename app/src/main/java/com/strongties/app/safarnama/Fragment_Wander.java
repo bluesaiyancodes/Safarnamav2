@@ -2,6 +2,7 @@ package com.strongties.app.safarnama;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
@@ -10,10 +11,12 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,6 +29,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.tasks.Task;
 
 public class Fragment_Wander extends Fragment implements OnMapReadyCallback {
+    private static final String TAG = "Wonder Fragment";
 
     View v;
     private GoogleMap googleMap;
@@ -66,6 +70,11 @@ public class Fragment_Wander extends Fragment implements OnMapReadyCallback {
 
         return v;
 
+    }
+
+    public void updateMap(Location location, int zoom){
+        assert  googleMap != null;
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), zoom));
     }
 
     @Override

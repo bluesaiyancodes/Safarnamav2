@@ -62,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql = "CREATE TABLE LANDMARKS (id INTEGER PRIMARY KEY AUTOINCREMENT, place_id TEXT, name TEXT, lat REAL, lon REAL, state TEXT, district TEXT, city TEXT, type TEXT, url TEXT)";
         db.execSQL(sql);
 
-        //Read from Landmarks csv file
+        //Read from Landmarks csv file and insert into LANDMARKS
         insertStatedataLocal(db, R.raw.landmarks_odisha);
         insertStatedataLocal(db, R.raw.landmarks_delhi);
         insertStatedataLocal(db, R.raw.landmarks_goa);
@@ -72,40 +72,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql2 = "CREATE TABLE INDIAINFO (id INTEGER PRIMARY KEY AUTOINCREMENT, state TEXT, district TEXT, lat REAL, lon REAL, statetype TEXT)";
         db.execSQL(sql2);
 
-        InputStream is2 = context.getResources().openRawResource(R.raw.india_info);
-        BufferedReader reader2 = new BufferedReader(
-                new InputStreamReader(is2, StandardCharsets.UTF_8));
-        String line2 = "";
-        int linecounter2 = 0;
-
-
-        try {
-
-            while ((line2 = reader2.readLine()) != null) {
-                // Split the line into different tokens (using the comma as a separator excluding commas inside quotes).
-                ArrayList<String> tokens = customSplitSpecific(line2);
-                //count lines
-                linecounter2++;
-                //exclude the first line as it contains headers
-                if (linecounter2 == 1) {
-                    continue;
-                }
-
-                try {
-                    insertdataIndiaInfo(tokens.get(0), tokens.get(1), Double.parseDouble(tokens.get(2)), Double.parseDouble(tokens.get(3)), tokens.get(4), db);
-                    Log.d("DatabaseHelper", "IndiaInfo CSV read -> " + tokens.toString());
-                } catch (NumberFormatException e) {
-                    Log.d("DatabaseHelper", "IndiaInfo CSV read -> " + tokens.toString());
-                }
-
-            }
-        } catch (IOException e1) {
-            Log.e("DatabaseHelper", "Error" + line2, e1);
-            e1.printStackTrace();
-        }
-
+        //Read from Landmarks csv file and insert into INDIAINFO
+        insertStateInformation(db, R.raw.india_info);
 
     }
+
 
     private void insertStatedataLocal(SQLiteDatabase db, int csvID){
 
@@ -136,6 +107,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
     }
+
+    private  void insertStateInformation(SQLiteDatabase db, int csvID){
+        InputStream is2 = context.getResources().openRawResource(csvID);
+        BufferedReader reader2 = new BufferedReader(
+                new InputStreamReader(is2, StandardCharsets.UTF_8));
+        String line2 = "";
+        int linecounter2 = 0;
+
+
+        try {
+
+            while ((line2 = reader2.readLine()) != null) {
+                // Split the line into different tokens (using the comma as a separator excluding commas inside quotes).
+                ArrayList<String> tokens = customSplitSpecific(line2);
+                //count lines
+                linecounter2++;
+                //exclude the first line as it contains headers
+                if (linecounter2 == 1) {
+                    continue;
+                }
+
+                try {
+                    insertdataIndiaInfo(tokens.get(0), tokens.get(1), Double.parseDouble(tokens.get(2)), Double.parseDouble(tokens.get(3)), tokens.get(4), db);
+                    Log.d("DatabaseHelper", "IndiaInfo CSV read -> " + tokens.toString());
+                } catch (NumberFormatException e) {
+                    Log.d("DatabaseHelper", "IndiaInfo CSV read -> " + tokens.toString());
+                }
+
+            }
+        } catch (IOException e1) {
+            Log.e("DatabaseHelper", "Error" + line2, e1);
+            e1.printStackTrace();
+        }
+    }
+
 
     private void insertdataLandmark(String name, String place_id, String state, String district, String city, double lat, double lon, String type, String url, SQLiteDatabase database) {
         ContentValues values = new ContentValues();
